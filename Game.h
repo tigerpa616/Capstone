@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <SDL.h>
+#include "SDL_image.h"
 #undef main //needed to avoid LNK2019 Error
 
 class Game
