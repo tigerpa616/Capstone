@@ -1,14 +1,20 @@
 /*
-Tutorial Used: How To Make A Game #2 : Drawing Textures/Sprites To The Screen : C++ And SDL2 Image Tutorial & How To Make a Game #3 : Limiting Frame Rate : C++ And SDL2 Tutorial
-	URL: https://www.youtube.com/watch?v=YrWQsuDT3NE&t=1s & https://www.youtube.com/watch?v=jzasDqPmtPI
+Tutorial Used: How To Make Games #4 : Creating A Simple Texture Loader : C++ And SDL2 Tutorial & How To Make A Game #5 : Creating The GameObject Class : C++ And SDL2 Tutorial
+	URL: https://www.youtube.com/watch?v=RqvpkZ7I1aU&t & https://www.youtube.com/watch?v=agn8GqGrCj4
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 
 #include "Game.h"
+#include "TextureManager.h"
+#include "GameObject.h"
 #include <iostream>
 
-SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
-SDL_Rect sourceRectangle, destinationRectangle;//allows us to determine position of the playerTexture
+//Don't need the below commented out code anymore thanks to GameObject.cpp/.h
+//SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
+//SDL_Rect sourceRectangle, destinationRectangle;//allows us to determine position of the playerTexture
+
+GameObject* player;
+GameObject* boss;
 
 Game::Game()
 {}
@@ -36,16 +42,21 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 		renderer = SDL_CreateRenderer(window, -1, 0);//*FIGURE OUT HOW THIS WORKS*//
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);//red,green,blue,black
+			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);//red,green,blue,black
 			std::cout << "Renderer Created!" << std::endl;
 		}
 
 		isRunning = true;
 	}
 
-	SDL_Surface* temporarySurface = IMG_Load("assets/testimage.png");//creates a value that loads the png file
-	playerTexture = SDL_CreateTextureFromSurface(renderer, temporarySurface);//uses the loaded png file and the renderer to create a texture
-	SDL_FreeSurface(temporarySurface);//frees up the memory
+	//Don't need the below commented out code anymore thanks to TextureManager.cpp/.h
+	//SDL_Surface* temporarySurface = IMG_Load("assets/testimage.png");//creates a value that loads the png file
+	//playerTexture = SDL_CreateTextureFromSurface(renderer, temporarySurface);//uses the loaded png file and the renderer to create a texture
+	//SDL_FreeSurface(temporarySurface);//frees up the memory
+
+	//playerTexture = TextureManager::LoadTexture("assets/testimage.png", renderer);
+	player = new GameObject("assets/player.png", renderer, 0, 0);
+	boss = new GameObject("assets/boss.png", renderer, 100, 100);
 
 	
 }
@@ -66,21 +77,27 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	count++;//Everytime game gets updated counter increases
+	player->Update();
+	boss->Update();
 	
-	destinationRectangle.h = 512;//changes the height of the destinationRectangle to 32 bits
-	destinationRectangle.w = 512;//changes the width of the destinationRectangle to 32 bits
-	destinationRectangle.x = count;//sets the image location on the x plane to be what ever the count value is
-	destinationRectangle.y = count/2;//sets the image location on the y plane to be what ever half the count value is
-
-	std::cout << count << std::endl;
+	//Everything below has been replaced thanks to GameObject.cpp/.h
+	//count++;//Everytime game gets updated counter increases
+	//destinationRectangle.h = 512;//changes the height of the destinationRectangle to 32 bits
+	//destinationRectangle.w = 512;//changes the width of the destinationRectangle to 32 bits
+	//destinationRectangle.x = count;//sets the image location on the x plane to be what ever the count value is
+	//destinationRectangle.y = count/2;//sets the image location on the y plane to be what ever half the count value is
+	//std::cout << count << std::endl;
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
 		
-	SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle);//copys the render so it can be used
+	player->Render();
+	boss->Render();
+
+	//Everything below has been replaced thanks to GameObject.cpp/.h
+	//SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle);//copys the render so it can be used
 
 	SDL_RenderPresent(renderer);
 }
