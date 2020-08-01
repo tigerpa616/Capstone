@@ -4,5 +4,6 @@
 class TextureManager
 {
 public:
-	static SDL_Texture* LoadTexture(const char* fileName, SDL_Renderer* rendwendy);
+	static SDL_Texture* LoadTexture(const char* fileName);//no longer need SDL_Renderer* rendwendy, thanks to Game::renderer
+	static void Draw(SDL_Texture* texture, SDL_Rect source, SDL_Rect destination);
 };

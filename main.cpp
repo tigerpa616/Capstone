@@ -1,3 +1,9 @@
+/*
+Tutorial Used: How To Make Games #6 : How To Make A Game #6 : Implement Tilemap's : C++ And SDL2 Tutorial
+	URL: https://www.youtube.com/watch?v=1eaxE_waDNc&list=PLhfAbcv9cehhkG7ZQK0nfIGJC_C-wSLrx
+Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
+*/
+
 #include "Game.h"
 
 Game* game = nullptr;
@@ -13,7 +19,7 @@ int main(int argc, const char* argv[])
 
 	game = new Game();
 	
-	game->initializeGame("Game Loop Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 720, false);
+	game->initializeGame("Game Loop Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
 
 	while (game->running())//basically says while the game is actually running then do the stuff below
 	{

@@ -1,0 +1,3 @@
+﻿D:\Software\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (SDL\) contains files shared from another project (C++ Group Project Test 01.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Game.cpp
+  C++ Group Project Test 01.vcxproj -> C:\Users\masar\source\repos\C++ Group Project Phase 02 [Textures]\SDL\C++ Group Project Phase 02 [Textures].exe

@@ -1,13 +1,8 @@
-/*
-Tutorial Used: How To Make Games #4 : Creating A Simple Texture Loader : C++ And SDL2 Tutorial & How To Make A Game #5 : Creating The GameObject Class : C++ And SDL2 Tutorial
-	URL: https://www.youtube.com/watch?v=RqvpkZ7I1aU&t & https://www.youtube.com/watch?v=agn8GqGrCj4
-Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
-*/
-
 #include "Game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
 #include <iostream>
+#include "Map.h"
 
 //Don't need the below commented out code anymore thanks to GameObject.cpp/.h
 //SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
@@ -15,6 +10,9 @@ Comments are of my own writing, explains what does what so I can remember in the
 
 GameObject* player;
 GameObject* boss;
+Map* map;
+
+SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
 
 Game::Game()
 {}
@@ -55,10 +53,11 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	//SDL_FreeSurface(temporarySurface);//frees up the memory
 
 	//playerTexture = TextureManager::LoadTexture("assets/testimage.png", renderer);
-	player = new GameObject("assets/player.png", renderer, 0, 0);
-	boss = new GameObject("assets/boss.png", renderer, 100, 100);
+	player = new GameObject("assets/player.png", 0, 0);
+	boss = new GameObject("assets/boss.png", 100, 100);
+	map = new Map();
 
-	
+
 }
 
 void Game::handleEvents()
@@ -66,7 +65,7 @@ void Game::handleEvents()
 	SDL_Event event;
 	SDL_PollEvent(&event);
 	switch (event.type)//switch statement to check the form of event happening, duh
-	{ 
+	{
 	case SDL_QUIT://event.SDL_QUIT means that you want to quit the event, dumbass
 		isRunning = false;
 		break;
@@ -77,9 +76,9 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	player->Update();
-	boss->Update();
-	
+	player->Update();//updates the player
+	boss->Update();//updates the boss
+
 	//Everything below has been replaced thanks to GameObject.cpp/.h
 	//count++;//Everytime game gets updated counter increases
 	//destinationRectangle.h = 512;//changes the height of the destinationRectangle to 32 bits
@@ -92,7 +91,9 @@ void Game::update()
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-		
+
+	map->DrawMap();
+
 	player->Render();
 	boss->Render();
 

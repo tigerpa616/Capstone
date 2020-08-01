@@ -4,7 +4,7 @@
 class GameObject
 {
 public:
-	GameObject(const char* textureSheet, SDL_Renderer* rendywendy, int x, int y);
+	GameObject(const char* textureSheet, int x, int y);//no longer need SDL_Renderer* rendwendy, thanks to Game::renderer
 	~GameObject();
 
 	void Update();
@@ -16,6 +16,6 @@ private:
 
 	SDL_Texture* objectTexture;
 	SDL_Rect sourceRectangle, destinationRectangle;
-	SDL_Renderer* renderer;
+	//SDL_Renderer* rendererPrivate; no longer needed
 
 };

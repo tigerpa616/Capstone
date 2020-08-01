@@ -19,13 +19,15 @@ public:
 	void render();
 	void clean();
 
+	static SDL_Renderer* renderer;//used so we don't have to make multiple copies of the same pointer
+
 	bool running() { return isRunning; }; //inline function that returns isRunning
 
 private:
 	int count = 0;
 	bool isRunning;
 	SDL_Window* window;
-	SDL_Renderer* renderer;
+	//SDL_Renderer* rendererPrivate; No longer needed
 };
 
 #endif /* Game_hpp */
