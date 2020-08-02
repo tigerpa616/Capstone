@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include <iostream>
 #include "Map.h"
+#include "EntityComponentSystem.h"
+#include "Components.h"
 
 //Don't need the below commented out code anymore thanks to GameObject.cpp/.h
 //SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
@@ -13,6 +15,9 @@ GameObject* boss;
 Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
+
+Manager manager;
+auto& newPlayer(manager.addEntity());
 
 Game::Game()
 {}
@@ -57,6 +62,12 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	boss = new GameObject("assets/boss.png", 100, 100);
 	map = new Map();
 
+	newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
+	newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
+
+	
+	
+
 
 }
 
@@ -78,6 +89,8 @@ void Game::update()
 {
 	player->Update();//updates the player
 	boss->Update();//updates the boss
+	manager.update();//will update all the entities which in turn will update all the components
+	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << std::endl;
 
 	//Everything below has been replaced thanks to GameObject.cpp/.h
 	//count++;//Everytime game gets updated counter increases
