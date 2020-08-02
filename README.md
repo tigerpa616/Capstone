@@ -1,1 +1,1 @@
-Beginning of map implementation with temporary 2D array as map, as well as added dirt, water, and grass elements to map
+Begin implementing an Entity Component System, as well as adding a Position tracker
