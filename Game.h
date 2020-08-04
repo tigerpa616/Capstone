@@ -23,6 +23,8 @@ public:
 
 	bool running() { return isRunning; }; //inline function that returns isRunning
 
+	static SDL_Event event;
+
 private:
 	int count = 0;
 	bool isRunning;

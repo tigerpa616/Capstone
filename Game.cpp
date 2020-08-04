@@ -6,6 +6,7 @@
 //#include "EntityComponentSystem.h"
 //#include "Components.h"
 #include "EntityComponentSystem/Components.h"
+#include "Vector2D.h"
 
 //Don't need the below commented out code anymore thanks to GameObject.cpp/.h
 //SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
@@ -16,7 +17,7 @@
 Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
-
+SDL_Event Game::event;
 Manager manager;
 auto& player(manager.addEntity());
 
@@ -63,8 +64,9 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	//boss = new GameObject("assets/boss.png", 100, 100);
 	map = new Map();
 
-	player.addComponent<PositionComponent>();
+	player.addComponent<TransformComponent>();
 	player.addComponent<SpriteComponent>("assets/player.png");
+	player.addComponent<keyboardController>();//allows us to control our player
 
 	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
 	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
@@ -73,7 +75,7 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 
 void Game::handleEvents()
 {
-	SDL_Event event;
+	
 	SDL_PollEvent(&event);
 	switch (event.type)//switch statement to check the form of event happening, duh
 	{
@@ -91,20 +93,14 @@ void Game::update()
 	//boss->Update();//updates the boss
 	manager.refresh();
 	manager.update();//will update all the entities which in turn will update all the components
-	std::cout << player.getComponent<PositionComponent>().x() << "," << player.getComponent<PositionComponent>().y() << std::endl;
+	
+	//player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
 
-	if (player.getComponent<PositionComponent>().x() > 100)
-	{
-		player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
-	}
+	//if (player.getComponent<TransformComponent>().position.x > 100)
+	//{
+		//player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
+	//}
 
-	//Everything below has been replaced thanks to GameObject.cpp/.h
-	//count++;//Everytime game gets updated counter increases
-	//destinationRectangle.h = 512;//changes the height of the destinationRectangle to 32 bits
-	//destinationRectangle.w = 512;//changes the width of the destinationRectangle to 32 bits
-	//destinationRectangle.x = count;//sets the image location on the x plane to be what ever the count value is
-	//destinationRectangle.y = count/2;//sets the image location on the y plane to be what ever half the count value is
-	//std::cout << count << std::endl;
 }
 
 void Game::render()

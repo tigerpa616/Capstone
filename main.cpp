@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make Games #7 : Entity Component System in C++ & SDL2 Tutorial & How To Make A Game #8 : Making A Sprite Class Component in C++ And SDL2 Tutorial
-	URL: https://www.youtube.com/watch?v=XsvI8Sng6dk&list=PLhfAbcv9cehhkG7ZQK0nfIGJC_C-wSLrx & https://www.youtube.com/watch?v=jq3Bg7XXjWw&list=PLhfAbcv9cehhkG7ZQK0nfIGJC_C-wSLrx
+Tutorial Used: How To Make A Game #9 : Making A Vector2D Class & Operator Overloading in C++ And SDL2 Tutorial & How To Make A Game #10 : Input Handling in C++ And SDL2 Tutorial
+	URL: https://tinyurl.com/y4c27so3  & https://tinyurl.com/yyyhbvjx
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 
