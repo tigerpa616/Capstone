@@ -75,7 +75,7 @@ public:
 
 	template <typename T> bool hasComponent() const
 	{
-		return componentBitSet[getComponentTypeID<T>]; //will check if we have the component attached
+		return componentBitSet[getComponentTypeID<T>()]; //will check if we have the component attached
 	}
 
 	template <typename T, typename... TArgs>

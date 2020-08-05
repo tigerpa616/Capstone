@@ -7,6 +7,7 @@
 //#include "Components.h"
 #include "EntityComponentSystem/Components.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 //Don't need the below commented out code anymore thanks to GameObject.cpp/.h
 //SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
@@ -20,6 +21,7 @@ SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we ha
 SDL_Event Game::event;
 Manager manager;
 auto& player(manager.addEntity());
+auto& wall(manager.addEntity());
 
 Game::Game()
 {}
@@ -64,9 +66,16 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	//boss = new GameObject("assets/boss.png", 100, 100);
 	map = new Map();
 
-	player.addComponent<TransformComponent>();
+	//Entity Component System Implementation
+
+	player.addComponent<TransformComponent>(2);
 	player.addComponent<SpriteComponent>("assets/player.png");
 	player.addComponent<keyboardController>();//allows us to control our player
+	player.addComponent<ColliderComponent>("player");
+
+	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
+	wall.addComponent<SpriteComponent>("assets/dirt.png");
+	wall.addComponent<ColliderComponent>("wall");
 
 	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
 	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
@@ -100,6 +109,12 @@ void Game::update()
 	//{
 		//player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
 	//}
+
+	if (Collision::AABB(player.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider))
+	{
+		player.getComponent<TransformComponent>().scale = 1;
+		std::cout << "Wall Hit!" << std::endl;
+	}
 
 }
 

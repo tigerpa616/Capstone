@@ -40,6 +40,13 @@ Map::Map()
 	destination.x = destination.y = 0; //starting destination
 }
 
+Map::~Map()
+{
+	SDL_DestroyTexture(dirt);
+	SDL_DestroyTexture(grass);
+	SDL_DestroyTexture(water);
+}
+
 void Map::LoadMap(int array[20][25]) //the point of the array is so we can load a map, which the array is essentially
 {
 	for (int row = 0; row < 20; row++)

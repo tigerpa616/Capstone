@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make A Game #9 : Making A Vector2D Class & Operator Overloading in C++ And SDL2 Tutorial & How To Make A Game #10 : Input Handling in C++ And SDL2 Tutorial
-	URL: https://tinyurl.com/y4c27so3  & https://tinyurl.com/yyyhbvjx
+Tutorial Used: How To Make A Game #11 : Collision Detection - AABB in C++ And SDL2 Tutorial
+	URL: https://tinyurl.com/y5lk56f8
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 
