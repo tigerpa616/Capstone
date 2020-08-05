@@ -1,1 +1,1 @@
-Begin implementing an Entity Component System, as well as adding a Position tracker
+ create a ColliderComponent allowing to create a collision class for axis aligned bounding box (AABB) collision detection
