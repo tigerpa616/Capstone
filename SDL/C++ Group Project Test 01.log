@@ -1,5 +1,3 @@
 ﻿D:\Software\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (SDL\) contains files shared from another project (C++ Group Project 03 [GameObject Class].vcxproj, C++ Group Project Phase 03 [GameObject Class].vcxproj, Computer Science Capstone Source Code Phase 04 [Implement Tilemap's].vcxproj, Computer Science Capstone Source Code Phase 05 [Entity Component System].vcxproj, Computer Science Capstone Source Code Phase 06.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Game.cpp
-  main.cpp
-  Generating Code...
-  C++ Group Project Test 01.vcxproj -> C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 06 - Copy\SDL\Computer Science Capstone Source Code Phase 07.exe
+  Vector2D.cpp
+  C++ Group Project Test 01.vcxproj -> C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 07\SDL\Computer Science Capstone Source Code Phase 07.exe
