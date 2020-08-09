@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make A Game #11 : Collision Detection - AABB in C++ And SDL2 Tutorial & How To Make A Game #12 : Collision Detection Resolution C++ And SDL2 Tutorial
-	URL: https://tinyurl.com/y5lk56f8 & https://tinyurl.com/y3gcanzu
+Tutorial Used: How To Make Games #13 : Tile Component & More Collision Detection C++ And SDL2 & Parsing External Map/Level Files In C++ & SDL :: How To Make A Game #14
+	URL: https://tinyurl.com/y46dvvn4 & https://tinyurl.com/yybdmnrf
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 

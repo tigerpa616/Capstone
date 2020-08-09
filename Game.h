@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "SDL_image.h"
+#include <vector>
 #undef main //needed to avoid LNK2019 Error
+
+class ColliderComponent;
 
 class Game
 {
@@ -19,11 +22,13 @@ public:
 	void render();
 	void clean();
 
+	static void AddTile(int id, int x, int y);
 	static SDL_Renderer* renderer;//used so we don't have to make multiple copies of the same pointer
 
 	bool running() { return isRunning; }; //inline function that returns isRunning
 
 	static SDL_Event event;
+	static std::vector<ColliderComponent*> colliders;
 
 private:
 	int count = 0;

@@ -19,9 +19,17 @@ Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
 SDL_Event Game::event;
+
+std::vector<ColliderComponent*> Game::colliders;
+
 Manager manager;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
+
+//No longer needed due to AddTile() method
+//auto& tile0(manager.addEntity());
+//auto& tile1(manager.addEntity());
+//auto& tile2(manager.addEntity());
 
 Game::Game()
 {}
@@ -68,6 +76,15 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 
 	//Entity Component System Implementation
 
+	//No longer needed due to AddTile() method
+	//tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); //water
+	//tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); //dirt
+	//tile1.addComponent<ColliderComponent>("dirt");
+	//tile2.addComponent<TileComponent>(150, 150, 32, 32, 2); //grass
+	//tile2.addComponent<ColliderComponent>("grass");
+
+	Map::LoadMap("assets/pyxel_16x16.map", 16, 16);
+
 	player.addComponent<TransformComponent>(2);
 	player.addComponent<SpriteComponent>("assets/player.png");
 	player.addComponent<keyboardController>();//allows us to control our player
@@ -110,20 +127,19 @@ void Game::update()
 		//player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
 	//}
 
-	if (Collision::AABB(player.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider))
-	{
-		player.getComponent<TransformComponent>().scale = 1;
-		player.getComponent<TransformComponent>().velocity * -1;
-		std::cout << "Wall Hit!" << std::endl;
-	}
 
+	for (auto cc : colliders)
+	{
+		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
+		
+	}
 }
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
 
-	map->DrawMap();
+	//map->DrawMap(); No longer needed
 
 	//player->Render();
 	//boss->Render();
@@ -141,5 +157,11 @@ void Game::clean()
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 	std::cout << "Game Clean" << std::endl;
+}
+
+void Game::AddTile(int id, int x, int y)
+{
+	auto& tile(manager.addEntity());
+	tile.addComponent<TileComponent>(x, y, 32, 32, id);//This is how we will add a tile
 }
 

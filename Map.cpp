@@ -1,91 +1,32 @@
 #include "Map.h"
-#include "TextureManager.h"
-
-int level_01[20][25] = { 
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-	
-
-};//temporary level until actual map replaces this (20 rows, 25 columns)
+#include "Game.h"
+#include <fstream>//allows us to read our map externally
 
 Map::Map()
 {
-	dirt = TextureManager::LoadTexture("assets/dirt.png");   //value 2
-	grass = TextureManager::LoadTexture("assets/grass.png"); //value 1
-	water = TextureManager::LoadTexture("assets/water.png"); //value 0
-
-	LoadMap(level_01);
-
-	source.x = source.y = 0; //starting position
-	destination.w = source.w = 32;
-	destination.h = source.h = 32;
-	destination.x = destination.y = 0; //starting destination
 }
 
 Map::~Map()
 {
-	SDL_DestroyTexture(dirt);
-	SDL_DestroyTexture(grass);
-	SDL_DestroyTexture(water);
 }
 
-void Map::LoadMap(int array[20][25]) //the point of the array is so we can load a map, which the array is essentially
+void Map::LoadMap(std::string path, int sizeX, int sizeY) //the point of the array is so we can load a map
 {
-	for (int row = 0; row < 20; row++)
+	char tile;
+	std::fstream mapFile;
+	mapFile.open(path);
+
+	for (int y = 0; y < sizeY; y++)
 	{
-		for (int column = 0; column < 25; column++)
+		for (int x = 0; x < sizeX; x++)
 		{
-			map[row][column] = array[row][column]; //array[][] is whatever map is imputed, so for us it will be level_01
+			mapFile.get(tile);
+			Game::AddTile(atoi(&tile), x * 32, y * 32);
+			mapFile.ignore();
 		}
 	}
+
+
+	mapFile.close();
 }
 
-void Map::DrawMap()
-{
-	int type = 0;
-
-	for (int row = 0; row < 20; row++)
-	{
-		for (int column = 0; column < 25; column++)
-		{
-			type = map[row][column]; //type is now set to what the value of the 2d array is
-
-			destination.x = column * 32;
-			destination.y = row * 32;
-
-			switch (type) //these cases will draw our textures
-			{
-			case 0:
-				TextureManager::Draw(water, source, destination);
-				break;
-			case 1:
-				TextureManager::Draw(grass, source, destination);
-				break;
-			case 2:
-				TextureManager::Draw(dirt, source, destination);
-				break;
-			default:
-				break;
-			}
-
-		}
-	}
-}
