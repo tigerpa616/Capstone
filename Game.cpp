@@ -26,6 +26,14 @@ Manager manager;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
 
+enum groupLabels : std::size_t //we can have up to 32 of these
+{
+	groupMap,
+	groupPlayers,
+	groupEnemies,
+	groupColliders
+};
+
 //No longer needed due to AddTile() method
 //auto& tile0(manager.addEntity());
 //auto& tile1(manager.addEntity());
@@ -86,13 +94,15 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	Map::LoadMap("assets/pyxel_16x16.map", 16, 16);
 
 	player.addComponent<TransformComponent>(2);
-	player.addComponent<SpriteComponent>("assets/player.png");
+	player.addComponent<SpriteComponent>("assets/player_idle.png", 4, 500);
 	player.addComponent<keyboardController>();//allows us to control our player
 	player.addComponent<ColliderComponent>("player");
+	player.addGroup(groupPlayers);
 
 	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
 	wall.addComponent<SpriteComponent>("assets/dirt.png");
 	wall.addComponent<ColliderComponent>("wall");
+	wall.addGroup(groupMap);
 
 	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
 	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
@@ -135,6 +145,12 @@ void Game::update()
 	}
 }
 
+//lists of objects in the groups in our renderer
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
+
+
 void Game::render()
 {
 	SDL_RenderClear(renderer);
@@ -143,7 +159,22 @@ void Game::render()
 
 	//player->Render();
 	//boss->Render();
-	manager.draw();//fixes bug where player sprite does not appear
+	//manager.draw();//fixes bug where player sprite does not appear
+
+	for (auto& t : tiles)
+	{
+		t->draw();// will draw each tile one after another
+	}
+
+	for (auto& p : players)
+	{
+		p->draw();// will draw each player one after another
+	}
+
+	for (auto& e : enemies)
+	{
+		e->draw();// will draw each enemy one after another
+	}
 
 	//Everything below has been replaced thanks to GameObject.cpp/.h
 	//SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle);//copys the render so it can be used
@@ -163,5 +194,6 @@ void Game::AddTile(int id, int x, int y)
 {
 	auto& tile(manager.addEntity());
 	tile.addComponent<TileComponent>(x, y, 32, 32, id);//This is how we will add a tile
+	tile.addGroup(groupMap);
 }
 

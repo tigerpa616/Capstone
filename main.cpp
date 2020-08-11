@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make Games #13 : Tile Component & More Collision Detection C++ And SDL2 & Parsing External Map/Level Files In C++ & SDL :: How To Make A Game #14
-	URL: https://tinyurl.com/y46dvvn4 & https://tinyurl.com/yybdmnrf
+Tutorial Used: How To Make A Game #15 :Render Layers & Grouping in C++ And SDL2 Tutorial & How To Make A Game #16 : Animate 2D Sprites : C++ And SDL2 Tutorial
+	URL: https://tinyurl.com/y3usgsrc & https://tinyurl.com/y4r4ncwa
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 
