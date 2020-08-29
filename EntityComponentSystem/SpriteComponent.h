@@ -2,6 +2,8 @@
 #include "Components.h"
 #include "SDL.h"
 #include "..//TextureManager.h"
+#include "Animation.h"
+#include <map>
 
 class SpriteComponent : public Component
 {
@@ -15,6 +17,12 @@ private:
 	int speed = 100; // this value is the delay in milliseconds
 
 public:
+	int animationIndex = 0; //default set to zero since if we don't animate our sprite then the initial y position needs to be at zero
+
+	std::map<const char*, Animation > animations; //this will hold our animations
+
+	SDL_RendererFlip spriteFlip = SDL_FLIP_NONE;
+
 	SpriteComponent() = default;
 
 	SpriteComponent(const char* path)
@@ -22,11 +30,19 @@ public:
 		setTexture(path);
 	}
 
-	SpriteComponent(const char* path, int numberFrames, int mspeed)
+	SpriteComponent(const char* path, bool isAnimated)
 	{
-		animated = true;
-		frames = numberFrames;
-		speed = mspeed;
+		animated = isAnimated;
+
+		Animation idle = Animation(0, 3, 500); //index 0, 3 frames, speed of 100 
+		Animation walk = Animation(1, 8, 100); //index 1, 8 frames, speed of 100 
+
+		animations.emplace("Idle", idle); //figure out what emplace does
+		animations.emplace("Walk", walk);
+
+		//frames = numberFrames; replaced with below
+		Play("idle");
+		//speed = mspeed;
 		setTexture(path);
 	}
 
@@ -56,6 +72,8 @@ public:
 			sourceRectangle.x = sourceRectangle.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
 		}
 		
+		sourceRectangle.y = animationIndex * transform->height;
+
 		destinationRectangle.x = static_cast<int>(transform->position.x);
 		destinationRectangle.y = static_cast<int>(transform->position.y);
 		destinationRectangle.w = transform->width * transform->scale;
@@ -64,6 +82,15 @@ public:
 
 	void draw() override
 	{
-		TextureManager::Draw(texture, sourceRectangle, destinationRectangle);
+		TextureManager::Draw(texture, sourceRectangle, destinationRectangle, spriteFlip);
+	}
+
+	void Play(const char* animationName)
+	{
+		//will be used to change the current frames and indexes that we need
+		frames = animations[animationName].frames; //the char* that we put in will go through the frames find it in SpriteComponent and returns the information here
+		animationIndex = animations[animationName].index;
+		speed = animations[animationName].speed;
+
 	}
 };

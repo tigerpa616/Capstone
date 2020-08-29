@@ -26,6 +26,8 @@ Manager manager;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
 
+const char* mapFile = "assets/terrain_ss.png";
+
 enum groupLabels : std::size_t //we can have up to 32 of these
 {
 	groupMap,
@@ -91,18 +93,15 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	//tile2.addComponent<TileComponent>(150, 150, 32, 32, 2); //grass
 	//tile2.addComponent<ColliderComponent>("grass");
 
-	Map::LoadMap("assets/pyxel_16x16.map", 16, 16);
+	Map::LoadMap("assets/map.map", 25, 20);
 
-	player.addComponent<TransformComponent>(2);
-	player.addComponent<SpriteComponent>("assets/player_idle.png", 4, 500);
+	player.addComponent<TransformComponent>(3);
+	player.addComponent<SpriteComponent>("assets/player_animations.png", true);
 	player.addComponent<keyboardController>();//allows us to control our player
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-	wall.addComponent<SpriteComponent>("assets/dirt.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(groupMap);
+	
 
 	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
 	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
@@ -190,10 +189,10 @@ void Game::clean()
 	std::cout << "Game Clean" << std::endl;
 }
 
-void Game::AddTile(int id, int x, int y)
+void Game::AddTile(int sourceX, int sourceY, int xPosition, int yPosition)
 {
 	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);//This is how we will add a tile
+	tile.addComponent<TileComponent>(sourceX, sourceY, xPosition, yPosition, mapFile);//This is how we will add a tile
 	tile.addGroup(groupMap);
 }
 

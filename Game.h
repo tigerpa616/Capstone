@@ -22,7 +22,7 @@ public:
 	void render();
 	void clean();
 
-	static void AddTile(int id, int x, int y);
+	static void AddTile(int sourceX, int sourceY, int xPosition, int yPosition);
 	static SDL_Renderer* renderer;//used so we don't have to make multiple copies of the same pointer
 
 	bool running() { return isRunning; }; //inline function that returns isRunning
