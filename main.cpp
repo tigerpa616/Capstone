@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make A Game #15 :Render Layers & Grouping in C++ And SDL2 Tutorial & How To Make A Game #16 : Animate 2D Sprites : C++ And SDL2 Tutorial
-	URL: https://tinyurl.com/y3usgsrc & https://tinyurl.com/y4r4ncwa
+Tutorial How To Make A Game #21 : 2D Tile Map Collision Parsing in C++ And SDL2 Tutorial & How To Make A Game #22 : Projectiles/Game Object Creation : Asset Manager in C++ And SDL2 Tutorial
+	URL: http://tiny.cc/p8dnsz & http://tiny.cc/p32osz
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 
@@ -19,7 +19,7 @@ int main(int argc, const char* argv[])
 
 	game = new Game();
 	
-	game->initializeGame("Game Loop Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 640, false);
+	game->initializeGame("Game Loop Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 900, false);
 
 	while (game->running())//basically says while the game is actually running then do the stuff below
 	{

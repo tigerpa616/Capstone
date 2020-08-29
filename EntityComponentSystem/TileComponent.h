@@ -1,52 +1,46 @@
 #pragma once
 #include "EntityComponentSystem.h"
-#include "TransformComponent.h"
-#include "SpriteComponent.h"
 #include "SDL.h"
 
 class TileComponent : public Component
 {
-public: 
-	TransformComponent* transform;
-	SpriteComponent* sprite;
+public:
 
-	SDL_Rect tileRectangle;
-	int tileID;
-	const char* path;
+	SDL_Texture* texture;
+	SDL_Rect sourceRectangle, destinationRectangle;
+	Vector2D position;
 
 	TileComponent() = default;
 
-	TileComponent(int x, int y, int w, int h, int id)
+	~TileComponent()
 	{
-		tileRectangle.x = x;
-		tileRectangle.y = y;
-		tileRectangle.w = w;
-		tileRectangle.h = h;
-		tileID = id; //automatically assigning the texture when we create a tile
-
-
-		switch (tileID)
-		{
-		case 0:
-			path = "assets/dirt.png";
-			break;
-		case 1:
-			path = "assets/grass.png";
-			break;
-		case 2:
-			path = "assets/water.png";
-			break;
-		default:
-			break;
-		}
+		SDL_DestroyTexture(texture);
 	}
 
-	void initialize() override
+	TileComponent(int sourceX, int sourceY, int xposition, int yposition, int tileSize, int tileScale, std::string id)
 	{
-		entity->addComponent<TransformComponent>((float)tileRectangle.x, (float)tileRectangle.y, tileRectangle.w, tileRectangle.h, 1); //will add the transform component to our tile
-		transform = &entity->getComponent<TransformComponent>();
+		texture = Game::assets->GetTexture(id);
 
-		entity->addComponent<SpriteComponent>(path);
-		sprite = &entity->getComponent<SpriteComponent>();
+		position.x = xposition;
+		position.y = yposition;
+
+		sourceRectangle.x = sourceX;
+		sourceRectangle.y = sourceY;
+		sourceRectangle.w = sourceRectangle.h = tileSize; //size of the tile we are taking
+
+		destinationRectangle.x = xposition;
+		destinationRectangle.y = yposition;
+		destinationRectangle.w = destinationRectangle.h = tileSize * tileScale;
+	}
+
+	void update() override
+	{
+		destinationRectangle.x = position.x - Game::camera.x;
+		destinationRectangle.y = position.y - Game::camera.y;
+	}
+
+	void draw() override
+	{
+		TextureManager::Draw(texture, sourceRectangle, destinationRectangle, SDL_FLIP_NONE);
 	}
 };

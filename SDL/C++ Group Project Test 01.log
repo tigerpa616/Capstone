@@ -1,3 +1,21 @@
-﻿D:\Software\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (SDL\) contains files shared from another project (C++ Group Project 03 [GameObject Class].vcxproj, C++ Group Project Phase 03 [GameObject Class].vcxproj, Computer Science Capstone Source Code Phase 04 [Implement Tilemap's].vcxproj, Computer Science Capstone Source Code Phase 05 [Entity Component System].vcxproj, Computer Science Capstone Source Code Phase 06.vcxproj, Computer Science Capstone Source Code Phase 07.vcxproj, Computer Science Capstone Source Code Phase 08.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
-  C++ Group Project Test 01.vcxproj -> C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 09\SDL\Computer Science Capstone Source Code Phase 09.exe
+﻿D:\Software\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (SDL\) contains files shared from another project (C++ Group Project 03 [GameObject Class].vcxproj, C++ Group Project Phase 03 [GameObject Class].vcxproj, Computer Science Capstone Source Code Phase 04 [Implement Tilemap's].vcxproj, Computer Science Capstone Source Code Phase 05 [Entity Component System].vcxproj, Computer Science Capstone Source Code Phase 06.vcxproj, Computer Science Capstone Source Code Phase 07.vcxproj, Computer Science Capstone Source Code Phase 08.vcxproj, Computer Science Capstone Source Code Phase 09.vcxproj, Computer Science Capstone Source Code Phase 10.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  BattleSystem.cpp
+  Collision.cpp
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(24,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(25,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(38,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(39,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Game.cpp
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(24,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(25,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(38,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(39,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\Game.cpp(117,66): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\Game.cpp(118,66): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Map.cpp
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(24,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(25,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(38,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\C++ Group Project Test 01\EntityComponentSystem\TileComponent.h(39,39): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Generating Code...
+  C++ Group Project Test 01.vcxproj -> C:\Users\masar\source\repos\Computer Science Capstone Source Code Phase 12\SDL\Computer Science Capstone Source Code Phase 12.exe
