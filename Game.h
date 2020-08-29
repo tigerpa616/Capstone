@@ -4,9 +4,14 @@
 #include <stdio.h>
 #include <SDL.h>
 #include "SDL_image.h"
+#include <SDL_ttf.h>
 #include <vector>
+#include <iostream>
+#include "BattleTrigger.h"
+#include "AssetManager.h"
 #undef main //needed to avoid LNK2019 Error
 
+class AssetManager;
 class ColliderComponent;
 
 class Game
@@ -22,17 +27,31 @@ public:
 	void render();
 	void clean();
 
-	static void AddTile(int id, int x, int y);
+	
 	static SDL_Renderer* renderer;//used so we don't have to make multiple copies of the same pointer
 
 	bool running() { return isRunning; }; //inline function that returns isRunning
 
 	static SDL_Event event;
-	static std::vector<ColliderComponent*> colliders;
+	
+
+	static bool isRunning;
+
+	static SDL_Rect camera;
+
+	static AssetManager* assets;
+
+	enum groupLabels : std::size_t //we can have up to 32 of these
+	{
+		groupMap,
+		groupPlayers,
+		groupColliders,
+		groupQuestGivers
+	};
 
 private:
 	int count = 0;
-	bool isRunning;
+	
 	SDL_Window* window;
 	//SDL_Renderer* rendererPrivate; No longer needed
 };

@@ -8,36 +8,26 @@
 #include "EntityComponentSystem/Components.h"
 #include "Vector2D.h"
 #include "Collision.h"
+#include "AssetManager.h"
 
-//Don't need the below commented out code anymore thanks to GameObject.cpp/.h
-//SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
-//SDL_Rect sourceRectangle, destinationRectangle;//allows us to determine position of the playerTexture
 
-//GameObject* player;
-//GameObject* boss;
 Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
 SDL_Event Game::event;
 
-std::vector<ColliderComponent*> Game::colliders;
+SDL_Rect Game::camera = { 0,0, 800, 640 };
 
 Manager manager;
 auto& player(manager.addEntity());
-auto& wall(manager.addEntity());
+auto& questGiver(manager.addEntity()); //prototype quest giver
 
-enum groupLabels : std::size_t //we can have up to 32 of these
-{
-	groupMap,
-	groupPlayers,
-	groupEnemies,
-	groupColliders
-};
 
-//No longer needed due to AddTile() method
-//auto& tile0(manager.addEntity());
-//auto& tile1(manager.addEntity());
-//auto& tile2(manager.addEntity());
+bool Game::isRunning = false;
+
+AssetManager* Game::assets = new AssetManager(&manager);
+
+
 
 Game::Game()
 {}
@@ -65,49 +55,42 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 		renderer = SDL_CreateRenderer(window, -1, 0);//*FIGURE OUT HOW THIS WORKS*//
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);//red,green,blue,black
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);//red,green,blue,black
 			std::cout << "Renderer Created!" << std::endl;
 		}
 
 		isRunning = true;
 	}
 
-	//Don't need the below commented out code anymore thanks to TextureManager.cpp/.h
-	//SDL_Surface* temporarySurface = IMG_Load("assets/testimage.png");//creates a value that loads the png file
-	//playerTexture = SDL_CreateTextureFromSurface(renderer, temporarySurface);//uses the loaded png file and the renderer to create a texture
-	//SDL_FreeSurface(temporarySurface);//frees up the memory
 
-	//playerTexture = TextureManager::LoadTexture("assets/testimage.png", renderer);
-	//player = new GameObject("assets/player.png", 0, 0);
-	//boss = new GameObject("assets/boss.png", 100, 100);
-	map = new Map();
-
+	assets->AddTexture("terrain", "assets/terrain_ss.png");
+	assets->AddTexture("player", "assets/player_animations.png");
+	assets->AddTexture("questGiver", "assets/questGiver00.png"); //not working?
+	
+	map = new Map("terrain", 3, 32);
+	
 	//Entity Component System Implementation
 
-	//No longer needed due to AddTile() method
-	//tile0.addComponent<TileComponent>(200, 200, 32, 32, 0); //water
-	//tile1.addComponent<TileComponent>(250, 250, 32, 32, 1); //dirt
-	//tile1.addComponent<ColliderComponent>("dirt");
-	//tile2.addComponent<TileComponent>(150, 150, 32, 32, 2); //grass
-	//tile2.addComponent<ColliderComponent>("grass");
+	map->LoadMap("assets/map.map", 25, 20);
 
-	Map::LoadMap("assets/pyxel_16x16.map", 16, 16);
-
-	player.addComponent<TransformComponent>(2);
-	player.addComponent<SpriteComponent>("assets/player_idle.png", 4, 500);
-	player.addComponent<keyboardController>();//allows us to control our player
+	player.addComponent<TransformComponent>(800.0f, 640.0f, 32, 32, 4);
+	player.addComponent<SpriteComponent>("player", true);
+	player.addComponent<keyboardController>();
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-	wall.addComponent<SpriteComponent>("assets/dirt.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(groupMap);
-
-	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
-	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
-
+	questGiver.addComponent<TransformComponent>(900.0f, 640.0f, 32, 32, 4);
+	questGiver.addComponent<SpriteComponent>("questGiver", true); 
+	questGiver.addComponent<ColliderComponent>("questGiver");
+	questGiver.addGroup(groupPlayers); //**problem lies here**//
 }
+
+//lists of objects in the groups in our renderer
+auto& tiles(manager.getGroup(Game::groupMap));
+auto& players(manager.getGroup(Game::groupPlayers));
+auto& colliders(manager.getGroup(Game::groupColliders));
+auto& questGivers(manager.getGroup(Game::groupQuestGivers)); //not doing anything?
+
 
 void Game::handleEvents()
 {
@@ -125,30 +108,37 @@ void Game::handleEvents()
 
 void Game::update()
 {
-	//player->Update();//updates the player
-	//boss->Update();//updates the boss
+	SDL_Rect playerCollider = player.getComponent<ColliderComponent>().collider;
+	Vector2D playerPosition = player.getComponent<TransformComponent>().position;
+	//Vector2D questGiverPosition = questGiver.getComponent<TransformComponent>().position;
+
 	manager.refresh();
 	manager.update();//will update all the entities which in turn will update all the components
-	
-	//player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
 
-	//if (player.getComponent<TransformComponent>().position.x > 100)
-	//{
-		//player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
-	//}
-
-
-	for (auto cc : colliders)
+	for (auto& c : colliders)
 	{
-		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-		
+		SDL_Rect cCollider = c->getComponent<ColliderComponent>().collider;
+		if (Collision::AABB(cCollider, playerCollider))
+		{
+			player.getComponent<TransformComponent>().position = playerPosition;
+		}
 	}
+
+	camera.x = player.getComponent<TransformComponent>().position.x - 400;
+	camera.y = player.getComponent<TransformComponent>().position.y - 320;
+
+	//sorts out camera movement
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > camera.w)
+		camera.x = camera.w;
+	if (camera.y > camera.h)
+		camera.y = camera.h;
 }
 
-//lists of objects in the groups in our renderer
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
+
 
 
 void Game::render()
@@ -161,23 +151,25 @@ void Game::render()
 	//boss->Render();
 	//manager.draw();//fixes bug where player sprite does not appear
 
+	for (auto& q : questGivers)
+	{
+		q->draw();
+	}
+	
 	for (auto& t : tiles)
 	{
 		t->draw();// will draw each tile one after another
+	}
+
+	for (auto& c : colliders)
+	{
+		c->draw();// will draw each collider one after another
 	}
 
 	for (auto& p : players)
 	{
 		p->draw();// will draw each player one after another
 	}
-
-	for (auto& e : enemies)
-	{
-		e->draw();// will draw each enemy one after another
-	}
-
-	//Everything below has been replaced thanks to GameObject.cpp/.h
-	//SDL_RenderCopy(renderer, playerTexture, NULL, &destinationRectangle);//copys the render so it can be used
 
 	SDL_RenderPresent(renderer);
 }
@@ -190,10 +182,4 @@ void Game::clean()
 	std::cout << "Game Clean" << std::endl;
 }
 
-void Game::AddTile(int id, int x, int y)
-{
-	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);//This is how we will add a tile
-	tile.addGroup(groupMap);
-}
 

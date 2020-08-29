@@ -7,29 +7,45 @@ class keyboardController : public Component
 {
 public:
 	TransformComponent* transform;
+	SpriteComponent* sprite;
 
 	void initialize() override
 	{
 		transform = &entity->getComponent<TransformComponent>();
+		sprite = &entity->getComponent<SpriteComponent>();
 	}
 
 	void update() override //Looking out for what keys we got
 	{
+		int playerMovement;
 		if (Game::event.type == SDL_KEYDOWN)//wasd movement
 		{
 			switch (Game::event.key.keysym.sym)
 			{
 			case SDLK_w:
 				transform->velocity.y = -1;
+				sprite->Play("WalkVertical");
+				playerMovement = rand() % 20 + 1; //generate a value between 1 and 7
+				BattleTrigger::BattleTrigger(playerMovement);
 				break;
 			case SDLK_a:
 				transform->velocity.x = -1;
+				sprite->Play("Walk");
+				sprite->spriteFlip = SDL_FLIP_HORIZONTAL;
+				playerMovement = rand() % 20 + 1; //generate a value between 1 and 7
+				BattleTrigger::BattleTrigger(playerMovement);
 				break;
 			case SDLK_s:
 				transform->velocity.y = 1;
+				sprite->Play("WalkVertical");
+				playerMovement = rand() % 20 + 1; //generate a value between 1 and 7
+				BattleTrigger::BattleTrigger(playerMovement);
 				break;
 			case SDLK_d:
 				transform->velocity.x = 1;
+				sprite->Play("Walk");
+				playerMovement = rand() % 20 + 1; //generate a value between 1 and 7
+				BattleTrigger::BattleTrigger(playerMovement);
 				break;
 			default:
 				break;
@@ -42,15 +58,23 @@ public:
 			{
 			case SDLK_w:
 				transform->velocity.y = 0;
+				sprite->Play("Idle");
 				break;
 			case SDLK_a:
 				transform->velocity.x = 0;
+				sprite->Play("Idle");
+				sprite->spriteFlip = SDL_FLIP_NONE;
 				break;
 			case SDLK_s:
 				transform->velocity.y = 0;
+				sprite->Play("Idle");
 				break;
 			case SDLK_d:
 				transform->velocity.x = 0;
+				sprite->Play("Idle");
+				break;
+			case SDLK_ESCAPE: //when esc is pressed the game will quit
+				Game::isRunning = false;
 				break;
 			default:
 				break;
