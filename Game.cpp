@@ -9,22 +9,23 @@
 #include "Vector2D.h"
 #include "Collision.h"
 
-//Don't need the below commented out code anymore thanks to GameObject.cpp/.h
-//SDL_Texture* playerTexture;//Creates a texture that will be used later to be a moving image
-//SDL_Rect sourceRectangle, destinationRectangle;//allows us to determine position of the playerTexture
 
-//GameObject* player;
-//GameObject* boss;
 Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;//we have it set to nullptr because we haven't initialized SDL yet
 SDL_Event Game::event;
+
+SDL_Rect Game::camera = { 0,0, 800, 640 };
 
 std::vector<ColliderComponent*> Game::colliders;
 
 Manager manager;
 auto& player(manager.addEntity());
 auto& wall(manager.addEntity());
+
+bool Game::isRunning = false;
+
+const char* mapFile = "assets/terrain_ss.png";
 
 enum groupLabels : std::size_t //we can have up to 32 of these
 {
@@ -34,10 +35,11 @@ enum groupLabels : std::size_t //we can have up to 32 of these
 	groupColliders
 };
 
-//No longer needed due to AddTile() method
-//auto& tile0(manager.addEntity());
-//auto& tile1(manager.addEntity());
-//auto& tile2(manager.addEntity());
+
+//lists of objects in the groups in our renderer
+auto& tiles(manager.getGroup(groupMap));
+auto& players(manager.getGroup(groupPlayers));
+auto& enemies(manager.getGroup(groupEnemies));
 
 Game::Game()
 {}
@@ -91,18 +93,15 @@ void Game::initializeGame(const char* title, int x_position, int y_position, int
 	//tile2.addComponent<TileComponent>(150, 150, 32, 32, 2); //grass
 	//tile2.addComponent<ColliderComponent>("grass");
 
-	Map::LoadMap("assets/pyxel_16x16.map", 16, 16);
+	Map::LoadMap("assets/map.map", 25, 20);
 
-	player.addComponent<TransformComponent>(2);
-	player.addComponent<SpriteComponent>("assets/player_idle.png", 4, 500);
+	player.addComponent<TransformComponent>(3);
+	player.addComponent<SpriteComponent>("assets/player_animations.png", true);
 	player.addComponent<keyboardController>();//allows us to control our player
 	player.addComponent<ColliderComponent>("player");
 	player.addGroup(groupPlayers);
 
-	wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-	wall.addComponent<SpriteComponent>("assets/dirt.png");
-	wall.addComponent<ColliderComponent>("wall");
-	wall.addGroup(groupMap);
+	
 
 	//newPlayer.addComponent<PositionComponent>();//this will give us access to position variables
 	//newPlayer.getComponent<PositionComponent>().setPosition(500, 500);
@@ -129,26 +128,22 @@ void Game::update()
 	//boss->Update();//updates the boss
 	manager.refresh();
 	manager.update();//will update all the entities which in turn will update all the components
-	
-	//player.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
 
-	//if (player.getComponent<TransformComponent>().position.x > 100)
-	//{
-		//player.getComponent<SpriteComponent>().setTexture("assets/boss.png"); //swaps the sprites
-	//}
+	camera.x = player.getComponent<TransformComponent>().position.x - 400;
+	camera.y = player.getComponent<TransformComponent>().position.y - 320;
 
-
-	for (auto cc : colliders)
-	{
-		Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-		
-	}
+	//sorts out camera movement
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
+	if (camera.x > camera.w)
+		camera.x = camera.w;
+	if (camera.y > camera.h)
+		camera.y = camera.h;
 }
 
-//lists of objects in the groups in our renderer
-auto& tiles(manager.getGroup(groupMap));
-auto& players(manager.getGroup(groupPlayers));
-auto& enemies(manager.getGroup(groupEnemies));
+
 
 
 void Game::render()
@@ -190,10 +185,10 @@ void Game::clean()
 	std::cout << "Game Clean" << std::endl;
 }
 
-void Game::AddTile(int id, int x, int y)
+void Game::AddTile(int sourceX, int sourceY, int xPosition, int yPosition)
 {
 	auto& tile(manager.addEntity());
-	tile.addComponent<TileComponent>(x, y, 32, 32, id);//This is how we will add a tile
+	tile.addComponent<TileComponent>(sourceX, sourceY, xPosition, yPosition, mapFile);//This is how we will add a tile
 	tile.addGroup(groupMap);
 }
 

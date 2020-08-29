@@ -24,7 +24,9 @@ public:
 
 	TransformComponent(int sc)
 	{
-		position.Zero();
+		//Roughly middle of the screen, placing the player here
+		position.x = 400;
+		position.y = 320;
 		scale = sc;
 	}
 

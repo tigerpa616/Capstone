@@ -1,6 +1,6 @@
 /*
-Tutorial Used: How To Make A Game #15 :Render Layers & Grouping in C++ And SDL2 Tutorial & How To Make A Game #16 : Animate 2D Sprites : C++ And SDL2 Tutorial
-	URL: https://tinyurl.com/y3usgsrc & https://tinyurl.com/y4r4ncwa
+Tutorial Used: How To Make A Game #19 : Scrolling Tile Maps In C++ And SDL2 Tutorial & How To Make A Game #20 : 2D Player Follow Camera in C++ And SDL2 Tutorial
+	URL: https://tinyurl.com/y54mdlsj & http://tiny.cc/rnansz
 Comments are of my own writing, explains what does what so I can remember in the future (a.k.a. for reference)
 */
 

@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include "SDL_image.h"
 #include <vector>
+#include "BattleTrigger.h"
 #undef main //needed to avoid LNK2019 Error
 
 class ColliderComponent;
@@ -22,7 +23,7 @@ public:
 	void render();
 	void clean();
 
-	static void AddTile(int id, int x, int y);
+	static void AddTile(int sourceX, int sourceY, int xPosition, int yPosition);
 	static SDL_Renderer* renderer;//used so we don't have to make multiple copies of the same pointer
 
 	bool running() { return isRunning; }; //inline function that returns isRunning
@@ -30,9 +31,13 @@ public:
 	static SDL_Event event;
 	static std::vector<ColliderComponent*> colliders;
 
+	static bool isRunning;
+
+	static SDL_Rect camera;
+
 private:
 	int count = 0;
-	bool isRunning;
+	
 	SDL_Window* window;
 	//SDL_Renderer* rendererPrivate; No longer needed
 };
